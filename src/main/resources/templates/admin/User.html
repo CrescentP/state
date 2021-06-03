@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 管理系统大布局 - Layui</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{admin/commons/common::topbar}"></div>
+
+    <div th:replace="~{admin/commons/common::leftbar}"></div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div align="center" style="font-size:40px">用户管理</div>
+
+        <div class="layui-container">
+            <div class="layui-row">
+                <br>
+                <br>
+                <div class="layui-col-md12" align="center">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                            <col width="200">
+                            <col width="200" >
+                            <col width="200" >
+                            <col width="300" >
+                        </colgroup>
+                        <thead>
+                        <tr align="center">
+                            <th>id</th>
+                            <th>userName</th>
+                            <th>password</th>
+                            <th>realName</th>
+                            <th>option</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="user:${users}">
+                            <td th:text="${user.getId()}"></td>
+                            <td th:text="${user.getUserName()}"></td>
+                            <td th:text="${user.getPassword()}"></td>
+                            <td th:text="${user.getName()}"></td>
+                            <td>
+                                <a class="layui-btn" href="">编辑</a>
+                                <a class="layui-btn" th:href="@{/deleteUser/} + ${user.getId()}" >删除</a>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div  th:replace="~{admin/commons/common::footbar}">
+
+
+    </div>
+
+
+
+    <script th:src="@{/layui/layui.js}"></script>
+
+    <script>
+        //JS
+        layui.use(['element', 'layer', 'util'], function(){
+            var element = layui.element
+                ,layer = layui.layer
+                ,util = layui.util
+                ,$ = layui.$;
+        });
+    </script>
+</body>
+</html>

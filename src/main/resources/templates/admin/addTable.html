@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 管理系统大布局 - Layui</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{admin/commons/common::topbar}"></div>
+
+    <div th:replace="~{admin/commons/common::leftbar}"></div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div align="center" style="font-size:40px">新增统计表</div>
+        <form class="layui-form" th:action="@{/admin/saveStateVo}"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">请填写描述</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" class="layui-textarea" name="description"></textarea>
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择统计项</label>
+                <div class="layui-input-block" th:each="plan:${planList}">
+                    <input type="checkbox" th:name="stateDetailList" th:title="${plan.getName()}" th:value="${plan.getId()}">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">统计表结束时间</label>
+                <div class="layui-input-block">
+                    <input type="text" name="endTime" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+            <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+        </form>
+        </div>
+
+    </div>
+
+
+<!--    <div  th:replace="~{admin/commons/common::footbar}">-->
+
+
+</div>
+
+
+
+    <script th:src="@{/layui/layui.js}"></script>
+
+    <script>
+        layui.use('form', function(){
+            var form = layui.form;
+        });
+    </script>
+</body>
+</html>

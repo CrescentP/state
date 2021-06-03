@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div class="layui-header" th:fragment="topbar">
+  <div class="layui-logo layui-hide-xs layui-bg-black">后台管理系统</div>
+  <ul class="layui-nav layui-layout-right">
+    <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+      <a href="javascript:;">
+        <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img">
+        tester
+      </a>
+      <dl class="layui-nav-child">
+        <dd><a href="">Your Profile</a></dd>
+        <dd><a href="">Settings</a></dd>
+        <dd><a href="">Sign out</a></dd>
+      </dl>
+    </li>
+  </ul>
+</div>
+
+<div class="layui-side layui-bg-black" th:fragment="leftbar">
+  <div class="layui-side-scroll">
+    <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+    <ul class="layui-nav layui-nav-tree" lay-filter="test">
+
+      <li class="layui-nav-item"><a th:href="@{/admin/user}">用户管理</a></li>
+      <li class="layui-nav-item"><a th:href="@{/admin/table}">统计表管理</a></li>
+      <li class="layui-nav-item"><a th:href="@{/admin/AddTable}">新增统计表</a></li>
+
+    </ul>
+  </div>
+</div>
+
+<div class="layui-footer" th:fragment="footbar">
+  <!-- 底部固定区域 -->
+  底部固定区域
+</div>
+
+
+</html>

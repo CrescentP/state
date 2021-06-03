@@ -1,0 +1,40 @@
+# 配置端口号
+server:
+  port: 8084
+# 数据库连接
+spring:
+  application:
+    name: state
+  profiles:
+    active: dev # 启动 application-dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss  # 时间格式化
+#    配置时区
+    time-zone: GMT+8
+    locale: zh_CN
+    # 解决json返回过程中long的精度丢失问题
+    generator:
+      write-numbers-as-strings: true
+      write-bigdecimal-as-plain: true
+  mvc:
+    servlet:
+      load-on-startup: 1 #SpringBoot的接口第一次访问都很慢，通过日志可以发现，dispatcherServlet不是一开始就加载的，有访问才开始加载的，即懒加载。
+#    static-path-pattern: /static/**
+  main:
+#    允许bean覆盖
+    allow-bean-definition-overriding: true
+
+# mybatis-plus配置
+mybatis-plus:
+  configuration:
+#    打印日志 因为Sql不会显示
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: false # 关闭驼峰自动转化
+  #    扫描包
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.kuangstudy.entity
+
+
+logging:
+  level:
+    root: info

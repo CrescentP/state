@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我是一个首页</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+
+
+    <style>
+/*头部*/
+        .headerbox{text-align:center;height:240px;background: url("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3827122839,3302242264&fm=26&gp=0.jpg") #FAFAFA;color: #fff;}
+        .headerbox .title{font-size:28px;}
+        .headerbox .cheaderbox{width : 640px;margin:0 auto;text-align:center;padding-top:20px;}
+    </style>
+
+    <style>
+        .section{margin-top: 100px}
+        /*.container{background:red}*/
+    </style>
+
+
+</head>
+<body>
+
+
+    <div id="app">
+
+        <input type="hidden" id="stateid" th:value="${id}"/>
+
+
+        <!--头部-->
+        <header>
+            <div class="headerbox">
+                <div class="cheaderbox">
+                    <h3 class="title pt30 b">{{stateVo.title}}</h3>
+                    <p class="pt15" v-html="stateVo.description"></p>
+                    <div class="pt10 f12">
+                        <span class="mr15">参与人数 ： {{stateVo.personNum}}  </span>
+                        <span class="ml15">创建时间 : {{stateVo.create_Time}} </span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+
+        <!--主体内容-->
+<!--        {{stateVo}}-->
+        <section class="section">
+            <div class="layui-container container">
+                <div class="layui-row" style="text-align:center">
+                    <div class="layui-col-md12">
+                        <div id="main" style="width: 100%;height:400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--底部-->
+        <footer class="mt30">
+            <div class="layui-container container">
+                <div class="layui-row" style="text-align:center">
+                    <div class="layui-col-md12 tc">
+                        <p class="b f20 g6">结束时间：{{stateVo.endTime}}</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+
+<script th:src="@{/js/vue.min.js}"></script>
+<script th:src="@{/layui/layui.js}"></script>
+<script th:src="@{/echarts/echarts.min.js}"></script>
+<script th:src="@{/js/axios.min.js}"></script>
+
+    <script>
+        var vm = new Vue({
+           el:"#app",
+            data:{
+                // title:"曹鹏好帅",
+                stateid:"",
+                stateVo:{},
+            },
+
+            created:function(){
+
+                this.stateid = document.getElementById("stateid").value;
+               // 查询统计数据信息
+               this.loadStateDetail()
+
+            },
+
+            methods:{
+               // 查询统计数据信息接口定义
+               loadStateDetail:function(){
+                   var that = this; // this 就近指向问题
+                   axios.get("/state/detail?stateId=" + this.stateid).then(function(res){
+                       // 查询数据表的数据vo
+                       that.stateVo = res.data.data.stateVo;
+                       // 数据加载（在这里不使用回调函数了）
+                       // 获取到对应的数据明细
+                       var stateDetailList = res.data.data.stateVo.stateDetailList;
+                       // console.log(stateDetailList);
+                       // 加载统计报表图
+                       that.loadCharts(stateDetailList);
+                   })
+               },
+
+                // 统计报表的加载
+                loadCharts:function(stateDetailList){
+
+                   if(stateDetailList && stateDetailList.length == 0) return;
+
+                   var xAxisData = [];
+                   var seriesData = [];
+
+                   for(var i = 0;i < stateDetailList.length;i++){
+                       xAxisData.push(stateDetailList[i].title);
+                       seriesData.push(stateDetailList[i].itemNum);
+                   }
+
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('main'));
+
+                    // 指定图表的配置项和数据
+                    var option = {
+                        xAxis: {
+                            type: 'category',
+                            data: xAxisData,
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            data: seriesData,
+                            type: 'bar',
+                            showBackground: true,
+                            backgroundStyle: {
+                                color: 'rgba(180, 180, 180, 0.2)'
+                            }
+                        }]
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                }
+            },
+
+        });
+    </script>
+
+
+</body>
+</html>
